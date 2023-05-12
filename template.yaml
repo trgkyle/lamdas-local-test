@@ -8,26 +8,25 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 10
     MemorySize: 128
 
 Resources:
   TestingFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: ../chocolate-serverless-stack/
-      Handler: dist/lambdas/calculate-and-apply-non-subsidised-return/index.handler
-      Runtime: nodejs14.x
+      # Handler: dist/lambdas/calculate-and-apply-non-subsidised-return/index.handler
+      Handler: dist/lambdas/dev-send-slack-test/index.handler
+      Runtime: nodejs16.x
       Architectures:
         - arm64
-      Events:
-        Testing:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /testing
-            Method: get
       Environment:
         Variables:
-          IRESS_USERNAME_ARN: arn:aws:secretsmanager:ap-southeast-1:212535165024:secret:IRESS_USERNAME-ShegeD
-          IRESS_PASSWORD_ARN: arn:aws:secretsmanager:ap-southeast-1:212535165024:secret:IRESS_PASSWORD-m32gyC
-          IRESS_OTP_SECRET_ARN: arn:aws:secretsmanager:ap-southeast-1:212535165024:secret:IRESS_OTP_SECRET-ODWbRs
+          SLACK_WEBHOOK_SECRET_ARN: arn:aws:secretsmanager:ap-southeast-1:782242702936:secret:ThirdPartyChannelURLE022BE1-Sghz0WOGjJMr-mZVIYW
+      Policies:
+        - SecretsManagerAccessPolicy:
+            Effect: Allow
+            Action:
+              - secretsmanager:GetSecretValue
+            Resource: "*"

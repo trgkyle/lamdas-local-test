@@ -12,7 +12,10 @@ sam local generate-event --help
 + API Gateway: sam local generate-event sqs receive-message
 
 - Local test run:
-sam local invoke <func_name> -e events/<sample_input>.json
+sam build && sam local invoke <func_name> -e events/<sample_input>.json
+
+ex: 
+sam build && sam local invoke TestingFunction -e events/sqs.json
 
 ```
 
